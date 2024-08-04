@@ -42,7 +42,7 @@ store.region.loc <- aggregate(ds.201712[,c("경도","위도")],
 store.region <- data.frame(store.region, store.region.loc[,2:3])
 
 ###################################################################
-register_google(key='AIzaSyAswQPQN0KBAdgMDcxnKvwwiqJataTBpgM')
+register_google(key='AIzaSyAswQPQ......nKvwwiqJataTBpgM')
 ###################################################################
 
 cen <- c(mean(store.region$경도),mean(store.region$위도))
