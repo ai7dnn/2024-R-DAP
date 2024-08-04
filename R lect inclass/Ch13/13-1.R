@@ -34,7 +34,6 @@ columns <- c( "상가업소번호", "상호명", "상권업종대분류명", "�
 ds.total <- NULL
 
 getwd()
-
 for (i in 1:length(files)) {
 # filename <- paste("seoul_", files[i], ".xlsx", sep="")
   filename <- paste("Ch13\\", "seoul_", files[i], ".xlsx", sep="")
@@ -44,7 +43,9 @@ for (i in 1:length(files)) {
   ds <- data.frame(ds)                          # 데이터프레임으로 변환
   ds <- ds[,columns]                            # 분석에 필요한 변수만 추출
   ds$수집연월 <- rep(i, nrow(ds))               # 데이터 수집 시점
-  ds.total <- rbind(ds.total,ds)                # 데이터 통합
+  ds.total <- rbind(ds.total, ds)               # 데이터 통합
 }
 
+str(ds.total)
 head(ds.total)
+

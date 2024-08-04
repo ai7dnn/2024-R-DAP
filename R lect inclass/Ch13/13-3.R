@@ -27,7 +27,11 @@ names(store.201512)[3] <- c("cnt_2015")
 store.201712 <- store.tmp[store.tmp$연월==5,]
 names(store.201712)[3] <- c("cnt_2017")
 
+####### 병합
 store.diff <- merge(store.201512[,2:3], store.201712[,2:3])
+head(store.diff)
+
+# 열 diff 추가
 store.diff$diff <- abs(store.diff$cnt_2015-store.diff$cnt_2017)
 store.diff <- store.diff[order(by=store.diff$diff, decreasing=T),]
 str(store.diff)
@@ -68,6 +72,7 @@ store.tmp <- aggregate(ds.total[,1],
                                동이름=ds.total$행정동명),
                        FUN=length)
 names(store.tmp)[3] <- c("count")
+
 store.dong.201512 <- store.tmp[store.tmp$연월==1,]
 names(store.dong.201512)[3] <- c("cnt_2015")
 store.dong.201712 <- store.tmp[store.tmp$연월==5,]
@@ -78,6 +83,7 @@ store.diff <- store.diff[order(by=store.diff$diff, decreasing=T),]
 
 top10 <- store.diff[1:10,1]                # 동명
 top10
+
 store.change <- subset(store.tmp, store.tmp$동이름 %in% top10)
 ggplot(store.change, aes(x=연월, y=count, colour=동이름, group=동이름)) +
   geom_line() +

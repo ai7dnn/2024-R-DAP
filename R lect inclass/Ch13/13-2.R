@@ -4,12 +4,17 @@ unique(ds.total$상권업종대분류명) # 상권업종 대분류
 unique(ds.total$상권업종중분류명) # 상권업종 중분류
 unique(ds.total$상권업종소분류명) # 상권업종 소분류
 
+table(ds.total$수집연월)         # 수집연월
+table(ds.total$상권업종대분류명) # 상권업종 대분류
+barplot(table(ds.total$상권업종대분류명))
+
 # NA 포함여부 확인
 sum(is.na(ds.total))
 
 # 201712 수집 데이터만 추출
 ds.201712 <- subset(ds.total, ds.total$수집연월== 5)
 dim(ds.201712)
+barplot(table(ds.201712$상권업종대분류명))
 
 # 업종별 점포수(대분류)
 store.level_1 <- aggregate(ds.201712[,1],
@@ -17,6 +22,8 @@ store.level_1 <- aggregate(ds.201712[,1],
                            FUN=length)
 store.level_1
 names(store.level_1)[2] = c("count")
+store.level_1
+
 ggplot(store.level_1, aes(x=대분류, y=count)) +
   geom_bar(stat="identity", width=0.7, fill="steelblue") +
   ggtitle("업종별 점포수") +
@@ -40,9 +47,10 @@ store.region.loc <- aggregate(ds.201712[,c("경도","위도")],
                               by=list(구이름=ds.201712$시군구명),
                               FUN=mean)
 store.region <- data.frame(store.region, store.region.loc[,2:3])
+head(store.region)
 
 ###################################################################
-register_google(key='AIzaSyAswQPQ......nKvwwiqJataTBpgM')
+register_google(key='AIzaSyAswQPQN......nKvwwiqJataTBpgM')
 ###################################################################
 
 cen <- c(mean(store.region$경도),mean(store.region$위도))
@@ -69,8 +77,23 @@ names(store.dong)[2] = c("count")
 store.dong <- store.dong[order(store.dong$count,decreasing=T),]
 dong.top10 <- store.dong[1:10,]
 dong.top10
+
 ggplot(dong.top10, aes(x=reorder(동이름, -count), y=count)) +
   geom_bar(stat="identity", width=0.7, fill="steelblue") +
   ggtitle("점포수 많은 상위 10개동") +
   theme(plot.title = element_text(color="black", size=14, face="bold"),
         axis.text.x = element_text(angle = 45))
+
+########################
+ggplot(dong.top10, aes(x=동이름, y=count)) +
+  geom_bar(stat="identity", width=0.7, fill="steelblue") +
+  ggtitle("점포수 많은 상위 10개동") +
+  theme(plot.title = element_text(color="black", size=14, face="bold"),
+        axis.text.x = element_text(angle = 45))
+
+ggplot(dong.top10, aes(x=reorder(동이름, count), y=count)) +
+  geom_bar(stat="identity", width=0.7, fill="steelblue") +
+  ggtitle("점포수 많은 상위 10개동") +
+  theme(plot.title = element_text(color="black", size=14, face="bold"),
+        axis.text.x = element_text(angle = 45))
+
